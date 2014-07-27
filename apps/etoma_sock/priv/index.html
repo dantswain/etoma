@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>Websocket client</title>
+    <script src="/static/jquery.min.js"></script>
+    <script src="/static/paper-full.js"></script>
+    <script src="/static/etoma-events.js"></script>
+    <script src="/static/main.js"></script>
+    <script src="/static/animation.js" type="text/paperscript" canvas="the_canvas"></script>
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>Websocket client</h1>
+    </div>
+    <div id="status">
+      Disconnected
+    </div>
+
+
+    <div id="navigation">
+
+      <p id="connecting">
+	<input type='text' id="server" value=""></input>
+	<button type="button" onclick="toggle_connection()">connection</button>
+      </p>
+      <div id="connected">				
+	<p>
+	  <input type='text' id="send_txt" value=></input>
+	  <button type="button" onclick="sendTxt();">send</button>
+	</p>
+      </div>
+
+      <div id="content">						
+      </div>
+
+    </div>
+
+    <canvas id="the_canvas" resize keepalive="true"></canvas>
+  </body>
+</html> 

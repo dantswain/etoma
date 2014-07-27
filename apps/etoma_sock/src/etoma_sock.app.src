@@ -1,0 +1,12 @@
+{application, etoma_sock,
+ [
+  {description, ""},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {mod, { etoma_sock_app, []}},
+  {env, []}
+ ]}.
