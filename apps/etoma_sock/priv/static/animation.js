@@ -1,5 +1,5 @@
 // Create a circle shaped path with its center at the center
-// of the view and a radius of 30:
+// of the view and a radius of 10:
 var path = new Path.Circle({
   center: view.center,
   radius: 10,
@@ -14,9 +14,11 @@ var placedSymbols = {};
 function onResize(event) {
 }
 
-function ensureObject(id, x, y) {
+function ensureObject(id, center) {
   if(placedSymbols[id] === undefined) {
-    var center = Point.random() * view.size;
+    if(center === undefined){
+      center = Point.random() * view.size;
+    }
     placedSymbols[id] = symbol.place(center);
   }
   return placedSymbols[id];
@@ -32,9 +34,9 @@ function onFrame(event) {
   var es = EtomaEvents.current_events();
   for(var ix = 0; ix < es.length; ix++) {
     var e = es[ix];
-    var obj = ensureObject(e.id);
-
     var dest = new Point(e.x, e.y);
+
+    var obj = ensureObject(e.id, dest);
     var diff = dest - obj.position;
 
     var dt = e.t - now + EtomaEvents.dt;
