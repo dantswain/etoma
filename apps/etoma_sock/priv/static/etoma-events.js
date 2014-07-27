@@ -20,7 +20,15 @@ var EtomaEvents = (function(){
     return b.length;
   }
 
+  function ensure_event_time(event_data) {
+    if(event_data.t === undefined){
+      event_data.t = Date.now();
+    }
+    return event_data;
+  }
+
   function add_event_to_bucket(b, event_data){
+    event_data = ensure_event_time(event_data);
     if(b.length == 0) {
       // if this is the only event, just add it
       b.push(event_data);
