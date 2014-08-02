@@ -2,50 +2,55 @@
 
 -export([payload/0]).
 
--export([stationary/4,
-         circular/4,
-         linear/4,
-         uniform_walk/4,
-         normal_walk/4,
+-export([stationary/0,
+         circular/2,
+         linear/1,
+         uniform_walk/1,
+         normal_walk/1,
          compose/2
         ]).
 
--record(payload, {speed = 0,
-                  omega = 0,
-                  theta = 0,
-                  pos_noise = 0}).
+-record(payload, {theta = 0}).
 
 payload() -> #payload{}.
 
-stationary(_Id, X, Y, P) -> {X, Y, P}.
+stationary() -> fun(_Id, X, Y, P) -> {X, Y, P} end.
 
-circular(_Id, X, Y, P = #payload{speed = S, omega = O, theta = T}) ->
-  {
-    linear_x(X, S, T),
-    linear_y(Y, S, T),
-    P#payload{theta = T + O}
-  }.
+circular(S, O) ->
+  fun(_Id, X, Y, P = #payload{theta = T}) ->
+      {
+       linear_x(X, S, T),
+       linear_y(Y, S, T),
+       P#payload{theta = T + O}
+      }
+  end.
 
-linear(_Id, X, Y, P = #payload{speed = S, theta = T}) ->
-  {
-    linear_x(X, S, T),
-    linear_y(Y, S, T),
-    P
-  }.
+linear(S) ->
+  fun(_Id, X, Y, P = #payload{theta = T}) ->
+      {
+       linear_x(X, S, T),
+       linear_y(Y, S, T),
+       P
+      }
+  end.
 
-uniform_walk(_Id, X, Y, P = #payload{pos_noise = N}) ->
-  {
-    X + math:sqrt(12.0) * N * uniform_noise(),
-    Y + math:sqrt(12.0) * N * uniform_noise(),
-    P
-  }.
+uniform_walk(N) ->
+  fun(_Id, X, Y, P) ->
+      {
+       X + math:sqrt(12.0) * math:sqrt(N) * uniform_noise(),
+       Y + math:sqrt(12.0) * math:sqrt(N) * uniform_noise(),
+       P
+      }
+  end.
 
-normal_walk(_Id, X, Y, P = #payload{pos_noise = N}) ->
-  {
-    X + math:sqrt(N) * normal_noise(),
-    Y + math:sqrt(N) * normal_noise(),
-    P
-  }.
+normal_walk(N) ->
+  fun(_Id, X, Y, P) ->
+      {
+       X + math:sqrt(N) * normal_noise(),
+       Y + math:sqrt(N) * normal_noise(),
+       P
+      }
+  end.
 
 compose(B1, B2) ->
   fun(Id, X, Y, P) ->
