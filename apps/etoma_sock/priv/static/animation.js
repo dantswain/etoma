@@ -40,7 +40,7 @@ function onFrame(event) {
     var diff = dest - obj.position;
 
     var dt = e.t - now + EtomaEvents.dt;
-    if(dt <= frame_dt){
+    if(dt <= 0.5*frame_dt){
       obj.position = dest;
     } else {
       var delta = frame_dt / dt;
