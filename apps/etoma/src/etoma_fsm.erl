@@ -27,6 +27,8 @@ start_link(Id, X0, Y0, CB, Payload) ->
 
 init([Id, X0, Y0, CB, Payload]) ->
   gproc:reg({n, l, {etoma, Id}}, etoma),
+  {A, B, C} = now(),
+  random:seed(A, B, C),
   {ok, step, #proc_state{id = Id, x = X0, y = Y0, step_callback = CB, payload = Payload}, ?DT}.
 
 step(_Event, ProcState = #proc_state{id = Id, x = X, y = Y, payload = Payload, step_callback = CB}) ->
