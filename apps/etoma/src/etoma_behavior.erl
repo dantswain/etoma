@@ -6,6 +6,7 @@
          circular/4,
          linear/4,
          uniform_walk/4,
+         normal_walk/4,
          compose/2
         ]).
 
@@ -34,8 +35,15 @@ linear(_Id, X, Y, P = #payload{speed = S, theta = T}) ->
 
 uniform_walk(_Id, X, Y, P = #payload{pos_noise = N}) ->
   {
-    X + math:sqrt(N) * uniform_noise(),
-    Y + math:sqrt(N) * uniform_noise(),
+    X + math:sqrt(12.0) * N * uniform_noise(),
+    Y + math:sqrt(12.0) * N * uniform_noise(),
+    P
+  }.
+
+normal_walk(_Id, X, Y, P = #payload{pos_noise = N}) ->
+  {
+    X + math:sqrt(N) * normal_noise(),
+    Y + math:sqrt(N) * normal_noise(),
     P
   }.
 
@@ -53,3 +61,9 @@ linear_y(Y, S, T) ->
 
 uniform_noise() ->
   random:uniform() - 0.5.
+
+% naive-ish box-muller transform
+normal_noise() ->
+  U1 = random:uniform(),
+  U2 = random:uniform(),
+  math:sqrt(-2.0*math:log(U1)) * math:cos(2.0 * math:pi() * U2).
