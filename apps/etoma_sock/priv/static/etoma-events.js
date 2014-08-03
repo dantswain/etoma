@@ -74,9 +74,3 @@ var EtomaEvents = (function(){
 
   return self;
 })();
-
-function EtomaEvents(){
-  this.buckets = [];
-  this.dt = 0;
-};
-
