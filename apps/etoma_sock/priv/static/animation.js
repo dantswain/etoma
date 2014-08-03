@@ -4,10 +4,9 @@ var path = new Path.Circle({
   center: view.center,
   radius: 10,
   strokeColor: 'black',
-  fillColor: 'blue'
+  fillColor: 'blue',
+  visible: false
   });
-
-var symbol = new Symbol(path);
 
 var placedSymbols = {};
 
@@ -19,7 +18,9 @@ function ensureObject(id, center) {
     if(center === undefined){
       center = Point.random() * view.size;
     }
-    placedSymbols[id] = symbol.place(center);
+    placedSymbols[id] = path.clone();
+    placedSymbols[id].visible = true;
+    placedSymbols[id].position = center;
   }
   return placedSymbols[id];
 }
@@ -34,9 +35,14 @@ function onFrame(event) {
   var es = EtomaEvents.current_events();
   for(var ix = 0; ix < es.length; ix++) {
     var e = es[ix];
+    var obj = ensureObject(e.id, dest);
+
+    if(e.fillColor != null) {
+      obj.fillColor = e.fillColor;
+    }
+
     var dest = new Point(e.x, e.y);
 
-    var obj = ensureObject(e.id, dest);
     var diff = dest - obj.position;
 
     var dt = e.t - now + EtomaEvents.dt;
@@ -46,6 +52,7 @@ function onFrame(event) {
       var delta = frame_dt / dt;
       obj.position += diff * delta;
     }
+
   }
   
   EtomaEvents.flush_to(now);
