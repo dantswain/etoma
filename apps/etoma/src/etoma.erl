@@ -8,7 +8,8 @@
          get_payload/1,
          set_position/3,
          set_payload/2,
-         change_behavior/2
+         change_behavior/2,
+         get_behavior/1
         ]).
 
 new(Id, X, Y) ->
@@ -39,3 +40,7 @@ set_payload(Id, P) ->
 change_behavior(Id, NewCB) ->
   Pid = gproc:where({n, l, {etoma, Id}}),
   gen_fsm:sync_send_all_state_event(Pid, {set_callback, NewCB}).
+
+get_behavior(Id) ->
+  Pid = gproc:where({n, l, {etoma, Id}}),
+  gen_fsm:sync_send_all_state_event(Pid, get_callback).

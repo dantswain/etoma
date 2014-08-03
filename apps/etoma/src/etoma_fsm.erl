@@ -51,6 +51,8 @@ handle_sync_event({set_position, X, Y}, _From, StateName, ProcState) ->
   {reply, ok, StateName, ProcState#proc_state{x = X, y = Y}, 0};
 handle_sync_event({set_callback, NewCB}, _From, StateName, ProcState) ->
   {reply, ok, StateName, ProcState#proc_state{step_callback = NewCB}, 0};
+handle_sync_event(get_callback, _From, StateName, ProcState = #proc_state{step_callback = CB}) ->
+  {reply, {ok, CB}, StateName, ProcState, 0};
 handle_sync_event({set_payload, NewP}, _From, StateName, ProcState) ->
   {reply, ok, StateName, ProcState#proc_state{payload = NewP}, 0};
 
