@@ -33,7 +33,7 @@ init([Id, X0, Y0, CB, Payload]) ->
 
 step(_Event, ProcState = #proc_state{id = Id, x = X, y = Y, payload = Payload, step_callback = CB}) ->
   {XNew, YNew, PayloadNew} = CB(Id, X, Y, Payload),
-  etoma_sock:move_to(Id, X, Y, etoma_sock:now_in_msec() + 50),
+  etoma_sock:move_to(Id, X, Y, etoma_sock:now_in_msec() + 50, etoma_behavior:payload_to_proplist(PayloadNew)),
   {next_state, step, ProcState#proc_state{x = XNew, y = YNew, payload = PayloadNew}, ?DT}.
 
 step(_Event, _From, ProcState) ->

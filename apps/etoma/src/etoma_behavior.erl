@@ -1,6 +1,6 @@
 -module(etoma_behavior).
 
--export([payload/0]).
+-export([payload/0, payload_to_proplist/1]).
 
 -export([stationary/0,
          circular/2,
@@ -10,9 +10,12 @@
          compose/2
         ]).
 
--record(payload, {theta = 0}).
+-record(payload, {theta = 0, fill_color = 'blue'}).
 
 payload() -> #payload{}.
+
+payload_to_proplist(#payload{fill_color = C}) ->
+  [{fillColor, C}].
 
 stationary() -> fun(_Id, X, Y, P) -> {X, Y, P} end.
 

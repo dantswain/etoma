@@ -12,7 +12,7 @@
         ]).
 
 new(Id, X, Y) ->
-  new(Id, X, Y, fun etoma_behavior:stationary/4, etoma_behavior:payload()).
+  new(Id, X, Y, etoma_behavior:stationary(), etoma_behavior:payload()).
 
 new(Id, X, Y, Callback) ->
   new(Id, X, Y, Callback, etoma_behavior:payload()).
